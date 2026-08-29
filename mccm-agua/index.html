@@ -1,0 +1,841 @@
+<br>
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+
+
+
+<div class="card">
+
+    <!-- Título -->
+    <div class="flex items-center justify-between flex-wrap gap-2 mb-4">
+        <h1 class="text-2xl md:text-3xl font-bold text-[#0b2a4a] tracking-tight flex items-center gap-2">🌡Estados del Agua
+        </h1>
+    </div>
+
+    <!-- Controles de Energía (Calor) -->
+    <div class="flex flex-col gap-4 mb-5 bg-white/40 p-4 rounded-2xl backdrop-blur-sm border border-white/40 shadow-sm">
+
+        <div class="flex flex-wrap gap-2 justify-center md:justify-start border-b border-slate-200/50 pb-3">
+            <button class="btn-estado" id="btnSolid">Sólido</button>
+            <button class="btn-estado" id="btnLiquid">Líquido</button>
+            <button class="btn-estado" id="btnGas">Gaseoso</button>
+        </div>
+
+        <div class="flex items-center gap-4 w-full">
+            <span class="text-xl">🔥</span>
+            <input type="range" id="heatSlider" min="0" max="904" value="0" step="2" class="flex-1">
+            <div class="flex items-center gap-1">
+                <input type="number" id="heatInput" min="0" max="904" value="0" step="2">
+                <span class="text-slate-600 font-bold">cal/g</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas + Paneles -->
+    <div class="flex flex-col lg:flex-row gap-6">
+
+        <!-- Canvas Container -->
+        <div class="flex-1 min-w-0 flex flex-col items-center justify-center">
+            <canvas id="simCanvas" width="600" height="450"></canvas>
+            <p class="text-xs text-slate-500 mt-2 select-none">
+                Simulación de modelo cinético-molecular · 50 partículas
+            </p>
+        </div>
+
+        <!-- Paneles Laterales -->
+        <div class="flex flex-col gap-4 panel-right shrink-0">
+
+            <!-- Temperatura -->
+            <div class="bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/40 text-center">
+                <span class="panel-label block mb-1">Temperatura del sistema</span>
+                <div class="text-4xl font-black text-[#ef4444]" id="tempDisplay">-273 °C</div>
+            </div>
+
+            <!-- Atracción -->
+            <div class="bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/40 text-center">
+                <span class="panel-label block mb-3">Atracción intermolecular</span>
+                <div class="flex gap-4 justify-center text-xs font-bold tracking-wide">
+                    <span id="attrFuerte" class="text-slate-300 transition-all duration-200">FUERTE</span>
+                    <span id="attrModerada" class="text-slate-300 transition-all duration-200">MODERADA</span>
+                    <span id="attrNula" class="text-slate-300 transition-all duration-200">NULA</span>
+                </div>
+            </div>
+
+            <!-- Movimiento -->
+            <div class="bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/40 text-center">
+                <span class="panel-label block mb-3">Movimiento que predomina</span>
+                <div class="flex gap-4 justify-center text-xs font-bold tracking-wide">
+                    <span id="movVibracion" class="text-slate-300 transition-all duration-200">VIBRACIÓN</span>
+                    <span id="movDesplazamiento" class="text-slate-300 transition-all duration-200">DESPLAZAMIENTO</span>
+                </div>
+            </div>
+
+            <!-- Estado actual -->
+            <div class="text-center bg-white/60 py-2 px-4 rounded-2xl shadow-sm border border-white/40 flex items-center justify-center gap-2">
+                <span class="font-medium text-slate-600 text-sm">Estado:</span>
+                <span id="estadoActualDisplay" class="font-bold text-[#0b2a4a] text-sm uppercase">SÓLIDO</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======================================================================
+    //  CONSTANTES
+    // ======================================================================
+    const NUM_PARTICLES = 50;
+    const RADIUS = 7;
+    const CANVAS_WIDTH = 600;
+    const CANVAS_HEIGHT = 450;
+
+    const CONTAINER_WIDTH = 380;
+    const MARGIN_TOP = 40;
+    const MARGIN_BOTTOM = 40;
+
+    const LEFT = (CANVAS_WIDTH - CONTAINER_WIDTH) / 2;
+    const RIGHT = LEFT + CONTAINER_WIDTH;
+    const TOP = MARGIN_TOP;
+    const BOTTOM = CANVAS_HEIGHT - MARGIN_BOTTOM;
+
+    const TEMP_MIN = -273;
+    const FUSION_TEMP = 0;
+    const EBULLITION_TEMP = 100;
+
+    // ======================================================================
+    //  DOM
+    // ======================================================================
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const heatSlider = document.getElementById('heatSlider');
+    const heatInput = document.getElementById('heatInput');
+    const tempDisplay = document.getElementById('tempDisplay');
+    const estadoActualDisplay = document.getElementById('estadoActualDisplay');
+
+    const attrFuerte = document.getElementById('attrFuerte');
+    const attrModerada = document.getElementById('attrModerada');
+    const attrNula = document.getElementById('attrNula');
+
+    const movVibracion = document.getElementById('movVibracion');
+    const movDesplazamiento = document.getElementById('movDesplazamiento');
+
+    const btnSolid = document.getElementById('btnSolid');
+    const btnLiquid = document.getElementById('btnLiquid');
+    const btnGas = document.getElementById('btnGas');
+
+    // ======================================================================
+    //  ESTADO
+    // ======================================================================
+    let particles = [];
+    let heatQ = 0; // Energía en cal/g
+    let temperature = TEMP_MIN;
+    let currentState = 'solid';
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vx = 0;
+            this.vy = 0;
+            this.eqX = null;
+            this.eqY = null;
+            this.locked = false;
+            this.isGas = false;
+            this.edge = false;
+            this.movedThisFrame = false;
+        }
+    }
+
+    // ======================================================================
+    //  TERMODINÁMICA
+    // ======================================================================
+    function calculateTemperature(q) {
+        if (q >= 0 && q <= 136) return 2 * q - 273;
+        if (q > 136 && q < 216) return 0;
+        if (q >= 216 && q <= 316) return q - 216;
+        if (q > 316 && q <= 856) return 100;
+        if (q > 856 && q <= 904) return 100 + (q - 856) / 0.48;
+        return -273;
+    }
+
+    // ======================================================================
+    //  GENERACIÓN DE POSICIONES
+    // ======================================================================
+    function generateSolidPositions() {
+        const cols = 5,
+            rows = 10;
+        const spacing = RADIUS * 2.2;
+        const blockWidth = (cols - 1) * spacing;
+        const blockHeight = (rows - 1) * spacing;
+        const startX = LEFT + (RIGHT - LEFT - blockWidth) / 2;
+        const startY = BOTTOM - RADIUS - blockHeight;
+        const pos = [];
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                pos.push({
+                    x: startX + c * spacing,
+                    y: startY + r * spacing,
+                    row: r,
+                    col: c,
+                    edge: (r === 0 || r === rows - 1 || c === 0 || c === cols - 1)
+                });
+            }
+        }
+        return pos;
+    }
+
+    function generateLiquidPositions() {
+        const pos = [];
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            pos.push({
+                x: LEFT + 30 + Math.random() * (RIGHT - LEFT - 60),
+                y: BOTTOM - 20 - Math.random() * 80
+            });
+        }
+        return pos;
+    }
+
+    function generateGasPositions() {
+        const pos = [];
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            pos.push({
+                x: LEFT + 20 + Math.random() * (RIGHT - LEFT - 40),
+                y: TOP + 20 + Math.random() * (BOTTOM - TOP - 40)
+            });
+        }
+        return pos;
+    }
+
+    function initParticles(state) {
+        particles = [];
+        let positions;
+        switch (state) {
+            case 'solid':
+                positions = generateSolidPositions();
+                for (let p of positions) {
+                    const particle = new Particle(p.x, p.y);
+                    particle.eqX = p.x;
+                    particle.eqY = p.y;
+                    particle.locked = true;
+                    particle.edge = p.edge;
+                    particles.push(particle);
+                }
+                break;
+            case 'liquid':
+                positions = generateLiquidPositions();
+                for (let p of positions) {
+                    const particle = new Particle(p.x, p.y);
+                    particle.locked = false;
+                    particles.push(particle);
+                }
+                break;
+            case 'gas':
+                positions = generateGasPositions();
+                for (let p of positions) {
+                    const particle = new Particle(p.x, p.y);
+                    particle.locked = false;
+                    particle.isGas = true;
+                    particle.vx = (Math.random() - 0.5) * 4.0;
+                    particle.vy = (Math.random() - 0.5) * 4.0;
+                    particles.push(particle);
+                }
+                break;
+        }
+    }
+
+    function resetState(state) {
+        let q;
+        switch (state) {
+            case 'solid':
+                q = 0;
+                break;
+            case 'liquid':
+                q = 236;
+                break; // ~20°C
+            case 'gas':
+                q = 880;
+                break; // ~150°C
+        }
+        updateEnergy(q);
+        initParticles(state);
+        currentState = state;
+        highlightButton(state);
+        updatePanels();
+    }
+
+    // ======================================================================
+    //  CÁLCULO DE CANTIDAD DE GAS (basado en energía)
+    // ======================================================================
+    function getTargetGasFromEnergy(q) {
+        if (q <= 216) return 0;
+        if (q <= 316) {
+            return Math.min(10, Math.floor((q - 216) / 10));
+        }
+        if (q <= 855) {
+            let extra = Math.floor((q - 317) / 13);
+            return Math.min(50, 10 + extra);
+        }
+        return 50;
+    }
+
+    // ======================================================================
+    //  MOTOR DE FÍSICA Y DETECCIÓN CONTINUA DE COLISIONES
+    // ======================================================================
+    function updatePhysics() {
+        updateStateBasedOnEnergy();
+
+        if (currentState === 'solid') {
+            updateSolid();
+        } else if (currentState === 'liquid') {
+            updateLiquid();
+            updateGas();
+            predictAndResolveCollisions();
+        } else if (currentState === 'gas') {
+            updateGas();
+            predictAndResolveCollisions();
+        }
+
+        resolveOverlaps();
+    }
+
+    function updateStateBasedOnEnergy() {
+        let newState;
+        if (heatQ <= 136) newState = 'solid';
+        else if (heatQ < 216) newState = 'solid'; // transición sólido-líquido
+        else if (heatQ <= 855) newState = 'liquid';
+        else newState = 'gas';
+
+        if (currentState === 'solid' && newState === 'liquid') {
+            for (let p of particles) {
+                if (p.locked) {
+                    p.locked = false;
+                    p.eqX = null;
+                    p.eqY = null;
+                    p.vx = (Math.random() - 0.5) * 2.0;
+                    p.vy = (Math.random() - 0.5) * 2.0;
+                }
+            }
+        }
+
+        currentState = newState;
+        highlightButton(currentState);
+    }
+
+    function predictAndResolveCollisions() {
+        const diam = RADIUS * 2;
+        const diamSq = diam * diam;
+
+        for (let p of particles) p.movedThisFrame = false;
+
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const a = particles[i];
+                const b = particles[j];
+
+                if (a.locked && b.locked) continue;
+                if (a.movedThisFrame || b.movedThisFrame) continue;
+
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                const dvx = b.vx - a.vx;
+                const dvy = b.vy - a.vy;
+
+                const A = dvx * dvx + dvy * dvy;
+                const B = 2 * (dx * dvx + dy * dvy);
+                const C = (dx * dx + dy * dy) - diamSq;
+
+                if (A === 0 || B >= 0) continue;
+
+                const D = B * B - 4 * A * C;
+
+                if (D > 0) {
+                    const t = (-B - Math.sqrt(D)) / (2 * A);
+
+                    if (t >= 0 && t <= 1) {
+                        const remainingTime = 1 - t;
+
+                        const colX_a = a.x + a.vx * t;
+                        const colY_a = a.y + a.vy * t;
+                        const colX_b = b.x + b.vx * t;
+                        const colY_b = b.y + b.vy * t;
+
+                        let nx = colX_b - colX_a;
+                        let ny = colY_b - colY_a;
+                        let dist = Math.sqrt(nx * nx + ny * ny);
+
+                        if (dist < 0.0001) {
+                            nx = 1;
+                            ny = 0;
+                            dist = 1;
+                        }
+
+                        const unx = nx / dist;
+                        const uny = ny / dist;
+
+                        let e = 1.0;
+                        if (a.isGas !== b.isGas) {
+                            e = 0.5;
+                        } else if (!a.isGas && !b.isGas) {
+                            e = 0.5;
+                        }
+
+                        const vRel = (a.vx * unx + a.vy * uny - b.vx * unx - b.vy * uny);
+                        const p_mom = vRel * (1 + e) / 2;
+
+                        a.vx -= p_mom * unx;
+                        a.vy -= p_mom * uny;
+                        b.vx += p_mom * unx;
+                        b.vy += p_mom * uny;
+
+                        if (!a.locked) {
+                            a.x = colX_a + a.vx * remainingTime;
+                            a.y = colY_a + a.vy * remainingTime;
+                            a.movedThisFrame = true;
+                        }
+                        if (!b.locked) {
+                            b.x = colX_b + b.vx * remainingTime;
+                            b.y = colY_b + b.vy * remainingTime;
+                            b.movedThisFrame = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let p of particles) {
+            if (p.locked) continue;
+
+            if (!p.movedThisFrame) {
+                p.x += p.vx;
+                p.y += p.vy;
+            }
+
+            if (isNaN(p.x) || isNaN(p.y)) {
+                p.x = LEFT + CONTAINER_WIDTH / 2;
+                p.y = TOP + 50;
+                p.vx = 0;
+                p.vy = 0;
+            }
+
+            if (p.x < LEFT + RADIUS) {
+                p.x = LEFT + RADIUS;
+                p.vx = Math.abs(p.vx);
+            }
+            if (p.x > RIGHT - RADIUS) {
+                p.x = RIGHT - RADIUS;
+                p.vx = -Math.abs(p.vx);
+            }
+            if (p.y < TOP + RADIUS) {
+                p.y = TOP + RADIUS;
+                p.vy = Math.abs(p.vy);
+            }
+            if (p.y > BOTTOM - RADIUS) {
+                p.y = BOTTOM - RADIUS;
+                p.vy = -Math.abs(p.vy);
+            }
+        }
+    }
+
+    function resolveOverlaps() {
+        const diam = RADIUS * 2;
+        const diamSq = diam * diam;
+        const iterations = 5;
+
+        for (let iter = 0; iter < iterations; iter++) {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const a = particles[i];
+                    const b = particles[j];
+
+                    if (a.locked && b.locked) continue;
+
+                    let dx = b.x - a.x;
+                    let dy = b.y - a.y;
+                    let distSq = dx * dx + dy * dy;
+
+                    if (distSq > 0 && distSq < diamSq) {
+                        let dist = Math.sqrt(distSq);
+                        if (dist < 0.001) {
+                            dx = Math.random() - 0.5;
+                            dy = Math.random() - 0.5;
+                            dist = Math.sqrt(dx * dx + dy * dy);
+                        }
+
+                        let overlap = (diam - dist) / 2;
+                        let nx = dx / dist;
+                        let ny = dy / dist;
+
+                        if (!a.locked && !b.locked) {
+                            a.x -= nx * overlap;
+                            a.y -= ny * overlap;
+                            b.x += nx * overlap;
+                            b.y += ny * overlap;
+                        } else if (!a.locked && b.locked) {
+                            a.x -= nx * (overlap * 2);
+                            a.y -= ny * (overlap * 2);
+                        } else if (a.locked && !b.locked) {
+                            b.x += nx * (overlap * 2);
+                            b.y += ny * (overlap * 2);
+                        }
+                    }
+                }
+            }
+
+            for (let p of particles) {
+                if (p.locked) continue;
+                if (p.x < LEFT + RADIUS) p.x = LEFT + RADIUS;
+                if (p.x > RIGHT - RADIUS) p.x = RIGHT - RADIUS;
+                if (p.y < TOP + RADIUS) p.y = TOP + RADIUS;
+                if (p.y > BOTTOM - RADIUS) p.y = BOTTOM - RADIUS;
+            }
+        }
+    }
+
+    // ---------- SÓLIDO (versión definitiva con verificación de soporte) ----------
+    function updateSolid() {
+        // [1] Liberación gradual (derretimiento)
+        if (heatQ > 136 && heatQ < 216) {
+            let target = Math.floor((heatQ - 136) / 2);
+            let released = particles.filter(p => p.edge && !p.locked).length;
+            let needed = target - released;
+            if (needed > 0) {
+                let edgeLocked = particles.filter(p => p.edge && p.locked);
+                // Si ya no quedan bordes, tomamos cualquier bloqueada
+                if (edgeLocked.length === 0) {
+                    edgeLocked = particles.filter(p => p.locked);
+                }
+                let releaseCount = Math.min(needed, edgeLocked.length);
+                for (let i = 0; i < releaseCount; i++) {
+                    let p = edgeLocked[i];
+                    p.locked = false;
+                    p.eqX = null;
+                    p.eqY = null;
+                    p.vx = (Math.random() - 0.5) * 2.0;
+                    p.vy = (Math.random() - 0.5) * 2.0;
+                }
+            }
+        }
+
+        // [2] NUEVO: Congelamiento estructural progresivo con verificación de soporte
+        let maxFree = 0;
+        if (heatQ > 136 && heatQ < 216) {
+            maxFree = Math.floor((heatQ - 136) / 2);
+        } else if (heatQ <= 136) {
+            maxFree = 0;
+        }
+
+        let currentFree = particles.filter(p => !p.locked);
+
+        if (currentFree.length > maxFree) {
+            let toLock = currentFree.length - maxFree;
+
+            // Ordenamos por 'y' descendente para evaluar primero las más cercanas al suelo
+            currentFree.sort((a, b) => b.y - a.y);
+
+            let lockedThisFrame = 0;
+            for (let i = 0; i < currentFree.length; i++) {
+                if (lockedThisFrame >= toLock) break;
+
+                let p = currentFree[i];
+
+                // Verificamos si la partícula tiene "soporte"
+                // Condición A: Está tocando el fondo
+                let supported = (p.y >= BOTTOM - RADIUS * 1.2);
+
+                // Condición B: Está apoyada sobre otra partícula que ya forma parte del sólido
+                if (!supported) {
+                    for (let other of particles) {
+                        if (other.locked) {
+                            let dx = p.x - other.x;
+                            let dy = other.y - p.y; // Positivo si 'other' está debajo
+
+                            // Si está debajo y lo suficientemente cerca para considerarse contacto
+                            if (dy > 0 && (dx * dx + dy * dy) < (RADIUS * 2.5) * (RADIUS * 2.5)) {
+                                supported = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Solo la fijamos a la red si tocó estructura. Si no, seguirá cayendo en el próximo frame.
+                if (supported) {
+                    p.locked = true;
+                    p.eqX = p.x;
+                    p.eqY = p.y;
+                    p.vx *= 0.1;
+                    p.vy *= 0.1;
+                    lockedThisFrame++;
+                }
+            }
+        }
+
+        // [3] Dinámica y vibración térmica
+        const k = 0.35;
+        const damping = 0.94;
+        const noiseAmplitude = 0.05 + 0.25 * ((temperature - TEMP_MIN) / (FUSION_TEMP - TEMP_MIN));
+
+        for (let p of particles) {
+            if (p.locked) {
+                let fx = -k * (p.x - p.eqX);
+                let fy = -k * (p.y - p.eqY);
+
+                fx += (Math.random() - 0.5) * noiseAmplitude;
+                fy += (Math.random() - 0.5) * noiseAmplitude;
+
+                p.vx += fx;
+                p.vy += fy;
+                p.vx *= damping;
+                p.vy *= damping;
+                p.x += p.vx;
+                p.y += p.vy;
+            } else {
+                p.vy += 0.08; // Gravedad para las que aún caen
+                p.vx *= 0.98;
+                p.vy *= 0.98;
+
+                p.vx += (Math.random() - 0.5) * noiseAmplitude * 0.4;
+                p.vy += (Math.random() - 0.5) * noiseAmplitude * 0.4;
+
+                p.x += p.vx;
+                p.y += p.vy;
+            }
+
+            // Límites de la caja
+            if (p.x < LEFT + RADIUS) {
+                p.x = LEFT + RADIUS;
+                p.vx = Math.abs(p.vx) * 0.4;
+            }
+            if (p.x > RIGHT - RADIUS) {
+                p.x = RIGHT - RADIUS;
+                p.vx = -Math.abs(p.vx) * 0.4;
+            }
+            if (p.y < TOP + RADIUS) {
+                p.y = TOP + RADIUS;
+                p.vy = Math.abs(p.vy) * 0.4;
+            }
+            if (p.y > BOTTOM - RADIUS) {
+                p.y = BOTTOM - RADIUS;
+                p.vy = -Math.abs(p.vy) * 0.4;
+            }
+        }
+    }
+
+    // ---------- LÍQUIDO ----------
+    function updateLiquid() {
+        let targetGas = getTargetGasFromEnergy(heatQ);
+        let currentGas = particles.filter(p => p.isGas).length;
+
+        if (currentGas < targetGas) {
+            const liquidParticles = particles.filter(p => !p.isGas);
+            if (liquidParticles.length > 0) {
+                const idx = Math.floor(Math.random() * liquidParticles.length);
+                const p = liquidParticles[idx];
+                p.isGas = true;
+                p.vy = -2.0 - Math.random() * 2.0;
+            }
+        } else if (currentGas > targetGas) {
+            const gasParticles = particles.filter(p => p.isGas);
+            if (gasParticles.length > 0) {
+                const idx = Math.floor(Math.random() * gasParticles.length);
+                gasParticles[idx].isGas = false;
+            }
+        }
+
+        const liquidParticles = particles.filter(p => !p.isGas);
+
+        for (let p of liquidParticles) {
+            p.vy += 0.08;
+            p.vx *= 0.97;
+            p.vy *= 0.97;
+
+            p.vx += (Math.random() - 0.5) * 0.4;
+            p.vy += (Math.random() - 0.5) * 0.15;
+        }
+    }
+
+    // ---------- GAS ----------
+    function updateGas() {
+        const speedBase = 2.5;
+        const speedMax = 6.0;
+
+        let currentMaxSpeed = speedBase;
+        if (temperature > 100 && temperature <= 200) {
+            currentMaxSpeed = speedBase + ((temperature - 101) / 99) * (speedMax - speedBase);
+        } else if (temperature > 200) {
+            currentMaxSpeed = speedMax;
+        }
+
+        const noise = 0.05 + 0.1 * (Math.max(0, temperature - 100) / 100);
+
+        for (let p of particles) {
+            if (!p.isGas) continue;
+
+            p.vx += (Math.random() - 0.5) * noise;
+            p.vy += (Math.random() - 0.5) * noise;
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+
+            if (speed > 0.001) {
+                if (speed > currentMaxSpeed) {
+                    p.vx = (p.vx / speed) * currentMaxSpeed;
+                    p.vy = (p.vy / speed) * currentMaxSpeed;
+                } else if (speed < currentMaxSpeed * 0.5) {
+                    p.vx = (p.vx / speed) * (currentMaxSpeed * 0.5);
+                    p.vy = (p.vy / speed) * (currentMaxSpeed * 0.5);
+                }
+            }
+        }
+    }
+
+    // ======================================================================
+    //  DIBUJO
+    // ======================================================================
+    function draw() {
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(LEFT, TOP, CONTAINER_WIDTH, BOTTOM - TOP);
+
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(LEFT, TOP, CONTAINER_WIDTH, BOTTOM - TOP);
+        ctx.strokeStyle = 'rgba(0,0,0,0.04)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(LEFT + 2, TOP + 2, CONTAINER_WIDTH - 4, BOTTOM - TOP - 4);
+
+        for (let p of particles) {
+            if (isNaN(p.x) || isNaN(p.y)) continue;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, RADIUS, 0, Math.PI * 2);
+            ctx.fillStyle = '#3b82f6';
+            ctx.fill();
+
+            ctx.strokeStyle = '#1e3a8a';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(p.x - RADIUS * 0.3, p.y - RADIUS * 0.3, RADIUS * 0.25, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.fill();
+        }
+    }
+
+    // ======================================================================
+    //  PANELES Y UI (AHORA BASADOS EN ENERGÍA)
+    // ======================================================================
+    function updatePanels() {
+        // Temperatura (sigue mostrándose, pero no influye en los paneles de abajo)
+        tempDisplay.textContent = Math.round(temperature) + ' °C';
+
+        // ----- Atracción intermolecular (según energía) -----
+        attrFuerte.className = 'text-slate-300 transition-all duration-200';
+        attrModerada.className = 'text-slate-300 transition-all duration-200';
+        attrNula.className = 'text-slate-300 transition-all duration-200';
+
+        if (heatQ >= 0 && heatQ <= 177) {
+            attrFuerte.className = 'text-red-500 font-black active-word';
+        } else if (heatQ >= 178 && heatQ <= 660) {
+            attrModerada.className = 'text-amber-500 font-black active-word';
+        } else if (heatQ >= 661 && heatQ <= 904) {
+            attrNula.className = 'text-green-500 font-black active-word';
+        }
+
+        // ----- Movimiento predominante (según energía) -----
+        movVibracion.className = 'text-slate-300 transition-all duration-200';
+        movDesplazamiento.className = 'text-slate-300 transition-all duration-200';
+
+        if (heatQ >= 0 && heatQ <= 177) {
+            movVibracion.className = 'text-blue-500 font-black active-word';
+        } else if (heatQ >= 178 && heatQ <= 660) {
+            movVibracion.className = 'text-blue-500 font-black active-word';
+            movDesplazamiento.className = 'text-orange-500 font-black active-word';
+        } else if (heatQ >= 661 && heatQ <= 904) {
+            movDesplazamiento.className = 'text-orange-500 font-black active-word';
+        }
+
+        // ----- Estado actual (según energía, con nombres de fase) -----
+        let estadoTexto = '';
+        if (heatQ >= 0 && heatQ <= 136) {
+            estadoTexto = 'SÓLIDO';
+        } else if (heatQ >= 137 && heatQ <= 215) {
+            estadoTexto = 'SÓLIDO + LÍQUIDO';
+        } else if (heatQ >= 216 && heatQ <= 316) {
+            estadoTexto = 'LÍQUIDO';
+        } else if (heatQ >= 317 && heatQ <= 855) {
+            estadoTexto = 'LÍQUIDO + GAS';
+        } else if (heatQ >= 856 && heatQ <= 904) {
+            estadoTexto = 'GASEOSO';
+        }
+        estadoActualDisplay.textContent = estadoTexto;
+    }
+
+    function highlightButton(state) {
+        [btnSolid, btnLiquid, btnGas].forEach(b => b.className = 'btn-estado');
+        if (state === 'solid') btnSolid.classList.add('active-solid');
+        else if (state === 'liquid') btnLiquid.classList.add('active-liquid');
+        else if (state === 'gas') btnGas.classList.add('active-gas');
+    }
+
+    function updateEnergy(val) {
+        let q = Math.min(904, Math.max(0, val));
+        heatQ = q;
+        heatSlider.value = q;
+        heatInput.value = q;
+        temperature = calculateTemperature(q);
+    }
+
+    // ======================================================================
+    //  BUCLE
+    // ======================================================================
+    function loop() {
+        try {
+            updatePhysics();
+            draw();
+            updatePanels();
+        } catch (e) {
+            console.error("Error en la simulación:", e);
+        }
+        requestAnimationFrame(loop);
+    }
+
+    // ======================================================================
+    //  INICIO
+    // ======================================================================
+    function init() {
+        heatSlider.addEventListener('input', function(e) {
+            updateEnergy(parseInt(e.target.value));
+        });
+
+        heatInput.addEventListener('change', function(e) {
+            updateEnergy(parseInt(e.target.value) || 0);
+        });
+
+        btnSolid.addEventListener('click', () => {
+            updateEnergy(0);
+            initParticles('solid');
+        });
+        btnLiquid.addEventListener('click', () => {
+            updateEnergy(236);
+            initParticles('liquid');
+        });
+        btnGas.addEventListener('click', () => {
+            updateEnergy(880);
+            initParticles('gas');
+        });
+
+        updateEnergy(0);
+        initParticles('solid');
+        updateStateBasedOnEnergy();
+        updatePanels();
+        loop();
+    }
+
+    window.updateEnergy = updateEnergy;
+    init();
+</script>
+
+
+<p dir="ltr" style="text-align: left;"><br></p>
