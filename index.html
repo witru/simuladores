@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simuladores Interactivos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --bg-body: #f8f9fa;
+      --card-radius: 16px;
+    }
+    body {
+      background-color: var(--bg-body);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .hero-title {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    /* Estilos del mosaico */
+    .sim-card {
+      border: none;
+      border-radius: var(--card-radius);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .sim-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      color: inherit;
+    }
+    .thumb-wrapper {
+      height: 180px;
+      width: 100%;
+      background-color: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .thumb-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .thumb-placeholder {
+      font-size: 3.5rem;
+      color: #6c757d;
+    }
+    .badge-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-cpu me-2"></i>CENTRAL DE SIMULADORES
+      </a>
+      <div class="ms-auto text-white-50 small">
+        <i class="bi bi-github me-1"></i>Alojado en GitHub Pages
+      </div>
+    </div>
+  </nav>
+
+  <header class="py-5 text-center container">
+    <h1 class="hero-title display-5 text-dark mb-2">Simulaciones Didácticas</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 600px;">
+      Laboratorios virtuales, modelos interactivos y herramientas de experimentación numérica.
+    </p>
+    <div class="d-flex justify-content-center align-items-center gap-2 mt-3">
+      <span class="border-top w-25"></span>
+      <i class="bi bi-star-fill text-dark small"></i>
+      <span class="border-top w-25"></span>
+    </div>
+  </header>
+
+  <main class="container pb-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+      <div class="col">
+        <a href="simuladores/mecanica/index.html" class="sim-card card bg-white shadow-sm">
+          <div class="thumb-wrapper">
+            <i class="bi bi-graph-up thumb-placeholder"></i>
+          </div>
+          <div class="card-body p-4">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill badge-tag mb-2">Cinemática y Dinámica</span>
+            <h5 class="card-title fw-bold mb-1">Trayectorias Gravitatorias</h5>
+            <p class="card-text text-secondary small">Comparación de curvas de descenso, aceleración y conservación de energía.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="simuladores/cohetes/index.html" class="sim-card card bg-white shadow-sm">
+          <div class="thumb-wrapper">
+            <i class="bi bi-rocket-takeoff thumb-placeholder"></i>
+          </div>
+          <div class="card-body p-4">
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill badge-tag mb-2">Propulsión</span>
+            <h5 class="card-title fw-bold mb-1">Cohetes de Agua</h5>
+            <p class="card-text text-secondary small">Modelado de la fase de empuje a presión variable y alcance aerodinámico.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="simuladores/circuitos/index.html" class="sim-card card bg-white shadow-sm">
+          <div class="thumb-wrapper">
+            <i class="bi bi-diagram-3 thumb-placeholder"></i>
+          </div>
+          <div class="card-body p-4">
+            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill badge-tag mb-2">Electricidad</span>
+            <h5 class="card-title fw-bold mb-1">Constructor de Circuitos</h5>
+            <p class="card-text text-secondary small">Análisis de mallas, resistencias en serie/paralelo y leyes de Kirchhoff.</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="py-4 border-top bg-white text-center text-secondary small">
+    <div class="container">
+      Desarrollado para entornos educativos interactivos
+    </div>
+  </footer>
+
+</body>
+</html>
