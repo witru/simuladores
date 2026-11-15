@@ -1,0 +1,544 @@
+{
+  "agua__etanol": {
+    "compA": "agua",
+    "compB": "etanol",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed. / OIML R 22 (Tablas alcoholimétricas a 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.9982
+      },
+      {
+        "wB": 10,
+        "rho": 0.9819
+      },
+      {
+        "wB": 20,
+        "rho": 0.9686
+      },
+      {
+        "wB": 30,
+        "rho": 0.9538
+      },
+      {
+        "wB": 40,
+        "rho": 0.9352
+      },
+      {
+        "wB": 50,
+        "rho": 0.9138
+      },
+      {
+        "wB": 60,
+        "rho": 0.8911
+      },
+      {
+        "wB": 70,
+        "rho": 0.8677
+      },
+      {
+        "wB": 80,
+        "rho": 0.8434
+      },
+      {
+        "wB": 90,
+        "rho": 0.818
+      },
+      {
+        "wB": 100,
+        "rho": 0.7893
+      }
+    ]
+  },
+  "agua__glicerina": {
+    "compA": "agua",
+    "compB": "glicerina",
+    "fuente": "Perry's Chemical Engineers' Handbook, 9th Ed. / Bosart & Snoddy (Ind. Eng. Chem., 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.9982
+      },
+      {
+        "wB": 10,
+        "rho": 1.0221
+      },
+      {
+        "wB": 20,
+        "rho": 1.0469
+      },
+      {
+        "wB": 30,
+        "rho": 1.0727
+      },
+      {
+        "wB": 40,
+        "rho": 1.0993
+      },
+      {
+        "wB": 50,
+        "rho": 1.1263
+      },
+      {
+        "wB": 60,
+        "rho": 1.1538
+      },
+      {
+        "wB": 70,
+        "rho": 1.1812
+      },
+      {
+        "wB": 80,
+        "rho": 1.2085
+      },
+      {
+        "wB": 90,
+        "rho": 1.2351
+      },
+      {
+        "wB": 100,
+        "rho": 1.2613
+      }
+    ]
+  },
+  "agua__etilenglicol": {
+    "compA": "agua",
+    "compB": "etilenglicol",
+    "fuente": "CRC Handbook of Chemistry and Physics / Sun & Teja (J. Chem. Eng. Data, 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.9982
+      },
+      {
+        "wB": 10,
+        "rho": 1.0108
+      },
+      {
+        "wB": 20,
+        "rho": 1.0241
+      },
+      {
+        "wB": 30,
+        "rho": 1.0378
+      },
+      {
+        "wB": 40,
+        "rho": 1.0514
+      },
+      {
+        "wB": 50,
+        "rho": 1.0644
+      },
+      {
+        "wB": 60,
+        "rho": 1.0765
+      },
+      {
+        "wB": 70,
+        "rho": 1.0875
+      },
+      {
+        "wB": 80,
+        "rho": 1.0973
+      },
+      {
+        "wB": 90,
+        "rho": 1.1058
+      },
+      {
+        "wB": 100,
+        "rho": 1.1132
+      }
+    ]
+  },
+  "agua__propilenglicol": {
+    "compA": "agua",
+    "compB": "propilenglicol",
+    "fuente": "Perry's Chemical Engineers' Handbook / George & Sastry (J. Chem. Eng. Data, 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.9982
+      },
+      {
+        "wB": 10,
+        "rho": 1.0058
+      },
+      {
+        "wB": 20,
+        "rho": 1.0142
+      },
+      {
+        "wB": 30,
+        "rho": 1.0226
+      },
+      {
+        "wB": 40,
+        "rho": 1.0301
+      },
+      {
+        "wB": 50,
+        "rho": 1.0361
+      },
+      {
+        "wB": 60,
+        "rho": 1.0402
+      },
+      {
+        "wB": 70,
+        "rho": 1.0421
+      },
+      {
+        "wB": 80,
+        "rho": 1.0418
+      },
+      {
+        "wB": 90,
+        "rho": 1.0396
+      },
+      {
+        "wB": 100,
+        "rho": 1.0361
+      }
+    ]
+  },
+  "agua__acetona": {
+    "compA": "agua",
+    "compB": "acetona",
+    "fuente": "CRC Handbook of Chemistry and Physics / Thomas & McAllister (AIChE J., 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.9982
+      },
+      {
+        "wB": 10,
+        "rho": 0.9847
+      },
+      {
+        "wB": 20,
+        "rho": 0.9712
+      },
+      {
+        "wB": 30,
+        "rho": 0.9554
+      },
+      {
+        "wB": 40,
+        "rho": 0.9368
+      },
+      {
+        "wB": 50,
+        "rho": 0.9156
+      },
+      {
+        "wB": 60,
+        "rho": 0.8927
+      },
+      {
+        "wB": 70,
+        "rho": 0.8684
+      },
+      {
+        "wB": 80,
+        "rho": 0.843
+      },
+      {
+        "wB": 90,
+        "rho": 0.8168
+      },
+      {
+        "wB": 100,
+        "rho": 0.7899
+      }
+    ]
+  },
+  "etanol__acetona": {
+    "compA": "etanol",
+    "compB": "acetona",
+    "fuente": "Timmermans, Physico-Chemical Constants of Binary Systems (20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.7893
+      },
+      {
+        "wB": 20,
+        "rho": 0.7897
+      },
+      {
+        "wB": 40,
+        "rho": 0.79
+      },
+      {
+        "wB": 60,
+        "rho": 0.7901
+      },
+      {
+        "wB": 80,
+        "rho": 0.79
+      },
+      {
+        "wB": 100,
+        "rho": 0.7899
+      }
+    ]
+  },
+  "etanol__glicerina": {
+    "compA": "etanol",
+    "compB": "glicerina",
+    "fuente": "Timmermans / Ernst et al. (Soluciones alcohólicas de glicerol a 20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.7893
+      },
+      {
+        "wB": 20,
+        "rho": 0.8588
+      },
+      {
+        "wB": 40,
+        "rho": 0.9392
+      },
+      {
+        "wB": 60,
+        "rho": 1.0315
+      },
+      {
+        "wB": 80,
+        "rho": 1.1384
+      },
+      {
+        "wB": 100,
+        "rho": 1.2613
+      }
+    ]
+  },
+  "etanol__etilenglicol": {
+    "compA": "etanol",
+    "compB": "etilenglicol",
+    "fuente": "Jiménez et al., J. Solution Chem. (20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.7893
+      },
+      {
+        "wB": 20,
+        "rho": 0.8408
+      },
+      {
+        "wB": 40,
+        "rho": 0.8981
+      },
+      {
+        "wB": 60,
+        "rho": 0.962
+      },
+      {
+        "wB": 80,
+        "rho": 1.0335
+      },
+      {
+        "wB": 100,
+        "rho": 1.1132
+      }
+    ]
+  },
+  "etanol__propilenglicol": {
+    "compA": "etanol",
+    "compB": "propilenglicol",
+    "fuente": "Zafarani-Moattar & Salabat, J. Chem. Eng. Data (20 °C)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre fracción másica de B (% m/m)",
+    "tipo_datos": "experimental",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 0.7893
+      },
+      {
+        "wB": 20,
+        "rho": 0.8305
+      },
+      {
+        "wB": 40,
+        "rho": 0.8755
+      },
+      {
+        "wB": 60,
+        "rho": 0.9244
+      },
+      {
+        "wB": 80,
+        "rho": 0.9778
+      },
+      {
+        "wB": 100,
+        "rho": 1.0361
+      }
+    ]
+  },
+  "glicerina__etilenglicol": {
+    "compA": "glicerina",
+    "compB": "etilenglicol",
+    "fuente": "Modelo de solución cuasi-ideal de polioles homólogos a 20 °C (Valor aproximado por correlación de volumen específico)",
+    "metodo_interpolacion": "Interpolación por tramos sobre % m/m (identificado como aproximado)",
+    "tipo_datos": "aproximado",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 1.2613
+      },
+      {
+        "wB": 25,
+        "rho": 1.221
+      },
+      {
+        "wB": 50,
+        "rho": 1.1828
+      },
+      {
+        "wB": 75,
+        "rho": 1.1469
+      },
+      {
+        "wB": 100,
+        "rho": 1.1132
+      }
+    ]
+  },
+  "glicerina__propilenglicol": {
+    "compA": "glicerina",
+    "compB": "propilenglicol",
+    "fuente": "Modelo de solución cuasi-ideal de polioles homólogos a 20 °C (Valor aproximado por correlación de volumen específico)",
+    "metodo_interpolacion": "Interpolación por tramos sobre % m/m (identificado como aproximado)",
+    "tipo_datos": "aproximado",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 1.2613
+      },
+      {
+        "wB": 25,
+        "rho": 1.1972
+      },
+      {
+        "wB": 50,
+        "rho": 1.1388
+      },
+      {
+        "wB": 75,
+        "rho": 1.0852
+      },
+      {
+        "wB": 100,
+        "rho": 1.0361
+      }
+    ]
+  },
+  "etilenglicol__propilenglicol": {
+    "compA": "etilenglicol",
+    "compB": "propilenglicol",
+    "fuente": "George & Sastry / Polioles homólogos a 20 °C (Valor aproximado)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre % m/m",
+    "tipo_datos": "aproximado",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 1.1132
+      },
+      {
+        "wB": 25,
+        "rho": 1.093
+      },
+      {
+        "wB": 50,
+        "rho": 1.0734
+      },
+      {
+        "wB": 75,
+        "rho": 1.0544
+      },
+      {
+        "wB": 100,
+        "rho": 1.0361
+      }
+    ]
+  },
+  "etilenglicol__acetona": {
+    "compA": "etilenglicol",
+    "compB": "acetona",
+    "fuente": "Timmermans, Physico-Chemical Constants of Binary Systems (20 °C, aproximado)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre % m/m",
+    "tipo_datos": "aproximado",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 1.1132
+      },
+      {
+        "wB": 25,
+        "rho": 1.0155
+      },
+      {
+        "wB": 50,
+        "rho": 0.9308
+      },
+      {
+        "wB": 75,
+        "rho": 0.8559
+      },
+      {
+        "wB": 100,
+        "rho": 0.7899
+      }
+    ]
+  },
+  "propilenglicol__acetona": {
+    "compA": "propilenglicol",
+    "compB": "acetona",
+    "fuente": "Correlación experimental de dioles-cetonas a 20 °C (Valor aproximado)",
+    "metodo_interpolacion": "Interpolación lineal por tramos sobre % m/m",
+    "tipo_datos": "aproximado",
+    "nodos": [
+      {
+        "wB": 0,
+        "rho": 1.0361
+      },
+      {
+        "wB": 25,
+        "rho": 0.9642
+      },
+      {
+        "wB": 50,
+        "rho": 0.8998
+      },
+      {
+        "wB": 75,
+        "rho": 0.8418
+      },
+      {
+        "wB": 100,
+        "rho": 0.7899
+      }
+    ]
+  }
+}

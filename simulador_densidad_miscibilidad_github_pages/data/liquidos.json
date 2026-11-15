@@ -1,0 +1,74 @@
+[
+  {
+    "id": "agua",
+    "nombre": "Agua destilada",
+    "densidad_20C": 0.9982,
+    "color": "#38bdf8",
+    "opacidad": 0.55,
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed. (2023)",
+    "observaciones": "Sustancia polar de referencia (20.0 °C). Forma puentes de hidrógeno e interactúa con alcoholes, glicoles y cetonas produciendo contracción volumétrica."
+  },
+  {
+    "id": "etanol",
+    "nombre": "Etanol absoluto",
+    "densidad_20C": 0.7893,
+    "color": "#a855f7",
+    "opacidad": 0.5,
+    "fuente": "CRC Handbook of Chemistry and Physics / NIST Chemistry WebBook",
+    "observaciones": "Alcohol alifático anhidro. Presenta marcada contracción de volumen al mezclarse con agua destilada."
+  },
+  {
+    "id": "glicerina",
+    "nombre": "Glicerina (glicerol)",
+    "densidad_20C": 1.2613,
+    "color": "#f59e0b",
+    "opacidad": 0.65,
+    "fuente": "Perry's Chemical Engineers' Handbook, 9th Ed.",
+    "observaciones": "Triol altamente viscoso e higroscópico. Completamente miscible con agua y alcoholes cortos; inmiscible con hidrocarburos y triglicéridos."
+  },
+  {
+    "id": "etilenglicol",
+    "nombre": "Etilenglicol",
+    "densidad_20C": 1.1132,
+    "color": "#10b981",
+    "opacidad": 0.58,
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Diol empleado como fluido térmico. Miscible con agua, etanol, acetona y glicerina; inmiscible con aceite de oliva."
+  },
+  {
+    "id": "propilenglicol",
+    "nombre": "Propilenglicol",
+    "densidad_20C": 1.0361,
+    "color": "#14b8a6",
+    "opacidad": 0.55,
+    "fuente": "DIPPR Project 801 / Perry's Chemical Engineers' Handbook",
+    "observaciones": "1,2-propanodiol. Completamente miscible con agua, etanol y acetona; inmiscible con aceites vegetales y mercurio."
+  },
+  {
+    "id": "acetona",
+    "nombre": "Acetona (propanona)",
+    "densidad_20C": 0.7899,
+    "color": "#ec4899",
+    "opacidad": 0.48,
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Cetona alifática polar aprótica volátil. Miscible con agua, alcoholes, glicoles y aceites vegetales."
+  },
+  {
+    "id": "aceite_oliva",
+    "nombre": "Aceite de oliva",
+    "densidad_20C": 0.913,
+    "color": "#eab308",
+    "opacidad": 0.75,
+    "fuente": "Codex Alimentarius STAN 33-1981 / Valor representativo normalizado a 20 °C",
+    "observaciones": "Mezcla apolar de triglicéridos (principalmente trioleína). Se adopta 0.913 g/cm³ como valor fijo representativo."
+  },
+  {
+    "id": "mercurio",
+    "nombre": "Mercurio metálico",
+    "densidad_20C": 13.5456,
+    "color": "#94a3b8",
+    "opacidad": 0.96,
+    "fuente": "NIST / Metrologia (Ambrose, 1990) a 20 °C",
+    "observaciones": "Metal líquido cohesivo a 20 °C. Inmiscible con todos los líquidos moleculares del sistema. Modelo idealizado sin formación de amalgamas."
+  }
+]

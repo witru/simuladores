@@ -1,0 +1,90 @@
+[
+  {
+    "id": "corcho",
+    "nombre": "Corcho natural macizo",
+    "densidad_20C": 0.24,
+    "color": "#d97706",
+    "fuente": "Engineering ToolBox / Manual de Materiales Forestales (grado técnico sellado)",
+    "observaciones": "Se modela como esfera maciza impermeabilizada (no porosa) con densidad representativa fija de 0.240 g/cm³."
+  },
+  {
+    "id": "polipropileno",
+    "nombre": "Polipropileno (PP)",
+    "densidad_20C": 0.905,
+    "color": "#60a5fa",
+    "fuente": "Polymer Handbook, 4th Ed. (Brandrup et al.) - Homopolímero isotáctico",
+    "observaciones": "Polímero termoplástico semicristalino. Densidad ligeramente inferior a la del aceite de oliva (0.913 g/cm³)."
+  },
+  {
+    "id": "pead",
+    "nombre": "Polietileno de alta densidad (PEAD)",
+    "densidad_20C": 0.955,
+    "color": "#f43f5e",
+    "fuente": "Polymer Handbook, 4th Ed. / ASTM D4976",
+    "observaciones": "Polímero semicristalino (rango comercial 0.941-0.965 g/cm³; se adopta 0.955 g/cm³). Ideal para equilibrio en interfaz aceite-agua."
+  },
+  {
+    "id": "aluminio",
+    "nombre": "Aluminio puro (Al)",
+    "densidad_20C": 2.7,
+    "color": "#cbd5e1",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Aluminio metálico policristalino (99.99%). Se hunde en líquidos orgánicos/acuosos y flota sobre mercurio."
+  },
+  {
+    "id": "zinc",
+    "nombre": "Zinc puro (Zn)",
+    "densidad_20C": 7.14,
+    "color": "#64748b",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Metal de transición hexagonal compacto a 20 °C."
+  },
+  {
+    "id": "estano",
+    "nombre": "Estaño blanco (β-Sn)",
+    "densidad_20C": 7.287,
+    "color": "#94a3b8",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Alótropo metálico tetragonal estable a 20 °C."
+  },
+  {
+    "id": "hierro",
+    "nombre": "Hierro puro (α-Fe)",
+    "densidad_20C": 7.874,
+    "color": "#475569",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Hierro electrolítico puro (BCC a 20 °C). No confundir con acero al carbono (~7.85 g/cm³) ni con fundición gris (~7.15 g/cm³)."
+  },
+  {
+    "id": "cobre",
+    "nombre": "Cobre electrolítico (Cu)",
+    "densidad_20C": 8.96,
+    "color": "#ea580c",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Cobre cúbico centrado en las caras (FCC) a 20 °C."
+  },
+  {
+    "id": "plata",
+    "nombre": "Plata pura (Ag)",
+    "densidad_20C": 10.49,
+    "color": "#e2e8f0",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Metal noble. En el modelo idealizado flota en mercurio sin amalgamar."
+  },
+  {
+    "id": "plomo",
+    "nombre": "Plomo puro (Pb)",
+    "densidad_20C": 11.34,
+    "color": "#334155",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Metal denso FCC. Flota parcialmente sumergido (83.7% de su volumen) en mercurio a 20 °C."
+  },
+  {
+    "id": "oro",
+    "nombre": "Oro puro (Au)",
+    "densidad_20C": 19.32,
+    "color": "#facc15",
+    "fuente": "CRC Handbook of Chemistry and Physics, 104th Ed.",
+    "observaciones": "Único sólido de la base cuya densidad supera a la del mercurio líquido (13.5456 g/cm³), sedimentando en el fondo."
+  }
+]

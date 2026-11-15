@@ -1,0 +1,91 @@
+{
+  "temperatura_C": 20.0,
+  "estados_definidos": {
+    "miscibles": "Forman una única fase líquida homogénea con propiedades intensivas uniformes.",
+    "inmiscibles": "Forman dos fases diferenciadas con solubilidad mutua despreciable.",
+    "parcialmente_miscibles": "Presentan brecha de miscibilidad (no admitidos en el modelo).",
+    "no_verificados": "Carecen de tabla experimental de densidades verificada a 20 °C en la base local (bloqueados)."
+  },
+  "matriz": {
+    "agua": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "miscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "miscibles",
+      "aceite_oliva": "inmiscibles",
+      "mercurio": "inmiscibles"
+    },
+    "etanol": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "miscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "miscibles",
+      "aceite_oliva": "parcialmente_miscibles",
+      "mercurio": "inmiscibles"
+    },
+    "glicerina": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "miscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "inmiscibles",
+      "aceite_oliva": "inmiscibles",
+      "mercurio": "inmiscibles"
+    },
+    "etilenglicol": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "miscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "miscibles",
+      "aceite_oliva": "inmiscibles",
+      "mercurio": "inmiscibles"
+    },
+    "propilenglicol": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "miscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "miscibles",
+      "aceite_oliva": "inmiscibles",
+      "mercurio": "inmiscibles"
+    },
+    "acetona": {
+      "agua": "miscibles",
+      "etanol": "miscibles",
+      "glicerina": "inmiscibles",
+      "etilenglicol": "miscibles",
+      "propilenglicol": "miscibles",
+      "acetona": "miscibles",
+      "aceite_oliva": "no_verificados",
+      "mercurio": "inmiscibles"
+    },
+    "aceite_oliva": {
+      "agua": "inmiscibles",
+      "etanol": "parcialmente_miscibles",
+      "glicerina": "inmiscibles",
+      "etilenglicol": "inmiscibles",
+      "propilenglicol": "inmiscibles",
+      "acetona": "no_verificados",
+      "aceite_oliva": "miscibles",
+      "mercurio": "inmiscibles"
+    },
+    "mercurio": {
+      "agua": "inmiscibles",
+      "etanol": "inmiscibles",
+      "glicerina": "inmiscibles",
+      "etilenglicol": "inmiscibles",
+      "propilenglicol": "inmiscibles",
+      "acetona": "inmiscibles",
+      "aceite_oliva": "inmiscibles",
+      "mercurio": "miscibles"
+    }
+  }
+}
